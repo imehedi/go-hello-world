@@ -60,9 +60,10 @@ jobs:
 
     - name: Compress Binaries
       run: |
+        pwd
         tar -zcvf \
         $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev-binaries.tar.gz \
-        $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev ../README.md
+        $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev README.md
 
     - name: Create Release
       id: create_release
