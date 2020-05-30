@@ -83,8 +83,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./${{ REPOSITORY_NAME }}-v${{ steps.buildnumber.outputs.build_number }}-dev-binaries.tar.gz
-        asset_name: ${{ REPOSITORY_NAME }}-v${{ steps.buildnumber.outputs.build_number }}-dev-binaries.tar.gz
+        asset_path: ./${{ env.REPOSITORY_NAME }}-v${{ steps.buildnumber.outputs.build_number }}-dev-binaries.tar.gz
+        asset_name: ${{ env.REPOSITORY_NAME }}-v${{ steps.buildnumber.outputs.build_number }}-dev-binaries.tar.gz
         asset_content_type: application/gzip
 
   createPR:
