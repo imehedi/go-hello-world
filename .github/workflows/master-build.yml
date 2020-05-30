@@ -48,6 +48,8 @@ jobs:
         with:
           token: ${{secrets.github_token}}
 
+      - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
+
       - name: Build
         run: |
           ls -lahrt ~/go/bin/
