@@ -53,10 +53,10 @@ jobs:
 
     - name: Build
       run: |
-           ls -lahrt ~/go/bin/
-           mkdir -p $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev/
-           cd $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev/
-           ~/go/bin/gox -osarch="linux/amd64 darwin/amd64 windows/amd64" ../
+        ls -lahrt ~/go/bin/
+        mkdir -p $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev/
+        cd $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev/
+        ~/go/bin/gox -osarch="linux/amd64 darwin/amd64 windows/amd64" ../
 
     - name: Compress Binaries
       run: |
