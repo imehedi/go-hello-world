@@ -45,14 +45,14 @@ jobs:
 
     - name: Build
       run: |
-           pwd
-           which go
-           env
-           which gox
-           locate gox
+#           pwd
+#           which go
+#           env
+#           which gox
+#           locate gox
            mkdir -p builds/
            cd builds/
-           $GOPATH/bin/gox -osarch="linux/amd64 darwin/386 windows/amd64" ../
+           $GOROOT/bin/gox -osarch="linux/amd64 darwin/386 windows/amd64" ../
 
     - name: Compress Binaries
       run: |
