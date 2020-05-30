@@ -49,18 +49,20 @@ jobs:
       with:
         token: ${{secrets.github_token}}
 
+    - run: echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}')
+
     - name: Build
       run: |
            ls -lahrt ~/go/bin/
-           mkdir -p ${{github.repository}}-v${{ steps.buildnumber.outputs.build_number }}-dev/
-           cd ${{github.repository}}-v${{ steps.buildnumber.outputs.build_number }}-dev/
+           mkdir -p $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev/
+           cd $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev/
            ~/go/bin/gox -osarch="linux/amd64 darwin/amd64 windows/amd64" ../
 
     - name: Compress Binaries
       run: |
         tar -zcvf \
-        ${{github.repository}}-v${{ steps.buildnumber.outputs.build_number }}-dev-binaries.tar.gz \
-        ${{github.repository}}-v${{ steps.buildnumber.outputs.build_number }}-dev ../README.md
+        $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev-binaries.tar.gz \
+        $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev ../README.md
 
     - name: Create Release
       id: create_release
@@ -80,8 +82,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./${{github.repository}}-v${{ steps.buildnumber.outputs.build_number }}-dev.tar.gz
-        asset_name: ${{github.repository}}-v${{ steps.buildnumber.outputs.build_number }}-dev.tar.gz
+        asset_path: ./$REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev.tar.gz
+        asset_name: $REPOSITORY_NAME-v${{ steps.buildnumber.outputs.build_number }}-dev.tar.gz
         asset_content_type: application/gzip
 
   createPR:
