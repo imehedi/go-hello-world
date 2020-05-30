@@ -1,4 +1,4 @@
-# go-helloworld
+# go-hello-world
 
 Hello, World.
 
