@@ -5,17 +5,17 @@ on:
     branches-ignore:
     - master
 jobs:
-#  go-lint:
-#    name: perform golang linting
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Check out code into the Go module directory
-#        uses: actions/checkout@v1
+  go-lint:
+    name: perform golang linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
 
-#      - name: golangci-lint
-#        uses: golangci/golangci-lint-action@v1.2.1
-#        with:
-#          version: v1.26
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v1.2.1
+        with:
+          version: v1.26
 
   go-build:
 #    needs: go-lint
@@ -42,6 +42,12 @@ jobs:
 
     - name: get gox
       run: go get github.com/mitchellh/gox
+
+    - name: Generate build number
+      id: buildnumber
+      uses: einaregilsson/build-number@v2
+      with:
+        token: ${{secrets.github_token}}
 
     - name: Build
       run: |
@@ -78,16 +84,16 @@ jobs:
         asset_name: release-v${{ steps.buildnumber.outputs.build_number }}-dev.tar.gz
         asset_content_type: application/gzip
 
-#  createPR:
-#    needs: go-build
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout the latest version
-#        uses: actions/checkout@v2
-#
-#      - name: Create PR
-#        uses: funivan/github-autopr@0.2.0
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          args: .head_commit.message .*#pr.*
+  createPR:
+    needs: go-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the latest version
+        uses: actions/checkout@v2
+
+      - name: Create PR
+        uses: funivan/github-autopr@0.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: .head_commit.message .*#pr.*
